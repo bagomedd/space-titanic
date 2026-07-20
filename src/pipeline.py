@@ -2,13 +2,17 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer, OneHotEncoder, RobustScaler
-from transformers import SpendingsAdder, DeckExtractor, NonEssentialDropper
-
+from sklearn.preprocessing import FunctionTransformer, OneHotEncoder, RobustScaler, SplineTransformer
+from src.transformers import SpendingsAdder, DeckExtractor, NonEssentialDropper
 
 numeric_transformer = Pipeline([
     ("imputer", SimpleImputer(strategy="median")),
     ("scaler", RobustScaler()),
+])
+
+spline_transformer = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("spline", SplineTransformer(n_knots=5, degree=3, knots="quantile"))
 ])
 
 categorial_transformer = Pipeline([
@@ -18,11 +22,12 @@ categorial_transformer = Pipeline([
 ])
 
 preprocessor = ColumnTransformer(transformers = [
-    ("numeric", numeric_transformer, ["Age","Spendings"]),
+    ("numeric", numeric_transformer, ["Spendings"]),
+    ("spline", spline_transformer, ["Age"]),
     ("categorial", categorial_transformer, ["HomePlanet","CryoSleep", "Destination", "VIP", "Deck"])
 ])
 
-full_pipeline = Pipeline([
+log_model_pipeline = Pipeline([
     ("dropper", NonEssentialDropper()),
     ("spendings", SpendingsAdder()),
     ("deck-extractor", DeckExtractor()),

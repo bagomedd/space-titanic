@@ -1,6 +1,13 @@
 venv/
 .venv/
 env/
+.env
+data/
+.data/
+
+*.egg-info/
+build/
+dist/
 
 __pycache__
 __marimo__

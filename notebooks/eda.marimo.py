@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.23.8"
+__generated_with = "0.23.14"
 app = marimo.App(width="medium")
 
 
@@ -9,8 +9,8 @@ def _():
     import kagglehub
     import pandas as pd
     import marimo as mo
-    from attr import dataclass
     from sklearn.model_selection import train_test_split
+
 
     import numpy as np
     from sklearn.linear_model import LogisticRegression
@@ -97,6 +97,22 @@ def _(mo):
     mo.md(r"""
     Значит, палуба сильно влияет на выживаемост
     """)
+    return
+
+
+@app.cell
+def _(df):
+    age_df = df.groupby(["Age","Transported"]).size().unstack()
+    age_df["Percentage"] = age_df[True] / (age_df[True] + age_df[False])
+    age_df
+    return
+
+
+@app.cell
+def _(df):
+    vip_df = df.groupby(["VIP", "Transported"]).size().unstack()
+    vip_df["Percentage"] = vip_df[True] / (vip_df[True] + vip_df[False])
+    vip_df
     return
 
 
