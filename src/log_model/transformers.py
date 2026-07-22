@@ -11,13 +11,14 @@ class SpendingsAdder(BaseEstimator, TransformerMixin):
         X["Spendings"] = X[columns].sum(axis=1)
         return X.drop(columns=columns)
         
-class DeckExtractor(BaseEstimator, TransformerMixin):
-    """Extracts Deck letter from cabin"""
+class CabinTransformer(BaseEstimator, TransformerMixin):
+    """Extracts Deck and Side letters from cabin"""
     def fit(self, X, y=None):
         return self
     def transform(self,X):
         X = X.assign(
-            Deck = lambda X: X["Cabin"].str[0].fillna("Unknown")
+            Deck = lambda X: X["Cabin"].str.split("/").str[0].fillna("Unknown"),
+            Side = lambda X: X["Cabin"].str.split("/").str[2].fillna("Unknown")   
         )
         return X.drop(columns=["Cabin"])
 

@@ -1,9 +1,7 @@
-import joblib
-import os
 import sklearn.metrics as metrics
 from sklearn.model_selection import train_test_split
 from src.data_prepare import load_initial_df
-from src.pipeline import log_model_pipeline
+from src.log_model.log_pipeline import log_model_pipeline
 
 
 df = load_initial_df()

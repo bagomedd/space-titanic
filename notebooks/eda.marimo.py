@@ -76,19 +76,23 @@ def _(mo):
 @app.cell
 def _(df):
     cabin_df = df.assign(
-        Deck = lambda x : x["Cabin"].str[0].fillna("Unknown")
+        Deck = lambda x: x['Cabin'].str.split('/').str[0].fillna('Unknown'),
+        Num  = lambda x: x['Cabin'].str.split('/').str[1].fillna('Unknown'),
+        Side = lambda x: x['Cabin'].str.split('/').str[2].fillna('Unknown')
     )
-
-    deck_analysis = (
-        cabin_df.groupby("Deck")["Transported"]
-        .agg(
-            Total_Passengers="count",
-            Survival_Rate="mean",
+    for category in (["Deck", "Num", "Side"]):
+        analysis = (
+            cabin_df.groupby(category)["Transported"]
+            .agg(
+                Total_Passengers="count",
+                Survival_Rate="mean",
+            )
+            .reset_index()    
+            .sort_values(by="Survival_Rate", ascending=False)
+        ) 
+        print(   
+        analysis
         )
-        .reset_index()    
-        .sort_values(by="Survival_Rate", ascending=False)
-    ) 
-    deck_analysis
     return
 
 
