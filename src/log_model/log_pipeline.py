@@ -19,6 +19,10 @@ spline_transformer = Pipeline([
     ("spline", SplineTransformer(n_knots=5, degree=3, knots="quantile"))
 ])
 
+boolean_transformer = Pipeline([
+    ("imputer", SimpleImputer(strategy="constant", fill_value="Unknown")),
+])
+
 categorial_transformer = Pipeline([
     ("to_str_transformer", FunctionTransformer(lambda x: x.astype(str),feature_names_out="one-to-one")),
     ("imputer", SimpleImputer(strategy="constant", fill_value="Unknown")),
@@ -34,7 +38,8 @@ side_transformer = Pipeline([
 preprocessor = ColumnTransformer(transformers = [
     ("numeric", numeric_transformer, ["Spendings"]),
     ("spline", spline_transformer, ["Age"]),
-    ("categorial", categorial_transformer, ["HomePlanet","CryoSleep", "Destination", "VIP", "Deck"]),
+    ("booean", boolean_transformer, ["CryoSleep", "VIP"]),
+    ("categorial", categorial_transformer, ["HomePlanet", "Destination", "Deck"]),
     ("side-transformer", side_transformer, ["Side"])
 ])
 

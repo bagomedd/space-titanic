@@ -9,6 +9,14 @@ Solution of Kaggle problem: www.kaggle.com/competitions/spaceship-titanic
 - `F1-Score:` `0.7105`
 - `ROC, AUC score:` `0.7326`
 
+
+## Metrics (Gradient Boosting Model)
+- `Accuracy:` `0.7163`
+- `Precision:` `0.7700`
+- `Recall:` `0.6105`
+- `F1-Score:` `0.6810`
+- `ROC, AUC score:` `0.7155`
+
 ## Stack
 - Python
 - Scikit-learn
